@@ -16,7 +16,7 @@ const Login = (getImages) => {
       password,
     });
    
-    if (error && !user) {
+    if (error) {
       alert(
         "Error communicating with Supabase, make sure to use a real email address!"
       );

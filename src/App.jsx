@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Container, Button, } from "react-bootstrap";
+import { Container, Button } from "react-bootstrap";
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { v4 as uuidv4 } from "uuid";
 import Login from "./components/Login";
@@ -32,25 +32,14 @@ function App() {
   }
 
   useEffect(() => {
-    
     if (user) {
       getImages();
     }
-    
   }, [user]);
 
   async function signOut() {
-    try {
-      const { error } = await supabase.auth.signOut();
-      if (error) {
-        throw new Error(error.message || "An error occurred during sign-out.");
-      }
-      console.log("User signed out successfully");
-    } catch (error) {
-      console.error("Error during sign-out:", error.message || error);
-    }
+    const { error } = await supabase.auth.signOut();
   }
-  
 
   async function uploadImage(e) {
     const file = e.target.files[0];
