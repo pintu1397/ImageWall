@@ -8,7 +8,7 @@ import ImageList from "./components/ImageList";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-//hi this is
+
 function App() {
   const [images, setImages] = useState([]);
   const user = useUser();
@@ -32,14 +32,25 @@ function App() {
   }
 
   useEffect(() => {
+    
     if (user) {
       getImages();
     }
+    
   }, [user]);
 
   async function signOut() {
-    const { error } = await supabase.auth.signOut();
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        throw new Error(error.message || "An error occurred during sign-out.");
+      }
+      console.log("User signed out successfully");
+    } catch (error) {
+      console.error("Error during sign-out:", error.message || error);
+    }
   }
+  
 
   async function uploadImage(e) {
     const file = e.target.files[0];
@@ -50,7 +61,6 @@ function App() {
       .upload(user.id + "/" + uuidv4(), file);
 
     if (data) {
-      // After successful upload, fetch images and update the state
       await getImages();
     } else {
       console.log(error);

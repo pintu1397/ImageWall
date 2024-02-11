@@ -1,8 +1,8 @@
 // LoginForm.js
-import React, { useState } from "react";
+import{ useState } from "react";
 import { Form, Button } from "react-bootstrap";
 
-import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
 const Login = (getImages) => {
   const [email, setEmail] = useState("");
@@ -10,18 +10,18 @@ const Login = (getImages) => {
   const supabase = useSupabaseClient();
 
   async function handleLogin() {
-    const { data, error } = await supabase.auth.signInWithPassword({
+    
+    const { user, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
-
-    if (error) {
+   
+    if (error && !user) {
       alert(
         "Error communicating with Supabase, make sure to use a real email address!"
       );
       console.error(error);
     } else {
-      //alert("Login Successful!");
       await getImages();
     }
   }
